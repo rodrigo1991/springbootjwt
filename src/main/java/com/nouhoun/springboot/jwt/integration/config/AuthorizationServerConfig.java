@@ -24,6 +24,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Value("${security.jwt.client-id}")
 	private String clientId;
+	
+	@Value("${security.jwt.cliente_basico}")
+	private String clienteBasico;
 
 	@Value("${security.jwt.client-secret}")
 	private String clientSecret;
@@ -51,14 +54,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-		configurer
-		        .inMemory()
-		        .withClient(clientId)
-		        .secret(clientSecret)
-		        .authorizedGrantTypes(grantType)
-		        .scopes(scopeRead, scopeWrite)
-		        //.scopes("na")
-		        .resourceIds(resourceIds);
+		configurer.inMemory()
+			        .withClient(clientId)
+			        .secret(clientSecret)
+			        .authorizedGrantTypes(grantType)
+			        .scopes(scopeRead, scopeWrite)
+			        .resourceIds(resourceIds)
+		        .and()
+			        .withClient(clienteBasico)
+			        .secret(clientSecret)
+			        .authorizedGrantTypes(grantType)
+			        .scopes(scopeRead)
+			        .resourceIds(resourceIds);
 	}
 
 	@Override
